@@ -55,12 +55,13 @@ public class GamesController : ControllerBase
     {
         return Enumerable.Range(1, SampleTitles.Length)
             .Select(id => new VideoGame
+            //set the properties of videogames object with random values for genre, platform, release year, and rating
             {
                 Id = id,
                 Title = SampleTitles[id - 1],
                 Genre = SampleGenres[RandomGenerator.Next(SampleGenres.Length)],
                 Platform = SamplePlatforms[RandomGenerator.Next(SamplePlatforms.Length)],
-                ReleaseYear = RandomGenerator.Next(2008, DateTime.Now.Year + 1),
+                ReleaseYear = RandomGenerator.Next(2001, DateTime.Now.Year + 1),
                 Rating = Math.Round(6.0 + RandomGenerator.NextDouble() * 4.0, 1)
             })
             .ToList();

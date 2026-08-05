@@ -1,19 +1,23 @@
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllers();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-app.UseHttpsRedirection();
-
-app.MapControllers();
-
-app.MapGet("/", async context =>
+public partial class Program
 {
-    context.Response.ContentType = "text/html";
-    await context.Response.WriteAsync(@"
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+        builder.Services.AddControllers();
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        app.UseHttpsRedirection();
+
+        app.MapControllers();
+
+        app.MapGet("/", async context =>
+        {
+            context.Response.ContentType = "text/html";
+            await context.Response.WriteAsync(@"
         <html>
         <head>
             <title>Video Game List API</title>
@@ -37,6 +41,8 @@ app.MapGet("/", async context =>
         </body>
         </html>
     ");
-});
+        });
 
-app.Run();
+        app.Run();
+    }
+}

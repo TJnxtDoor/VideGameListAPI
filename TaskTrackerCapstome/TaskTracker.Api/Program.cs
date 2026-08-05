@@ -1,34 +1,42 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapControllers();
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/", async context =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(@"
+        <html>
+        <head>
+            <title>Video Game List API</title>
+            <style>
+                body { font-family: sans-serif; margin: 40px; line-height: 1.6; background: #f4f7f6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+                h1 { color: #e67e22; }
+                a { color: #e67e22; text-decoration: none; font-weight: bold; }
+                a:hover { text-decoration: underline; }
+                ul { padding-left: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>Video Game List API</h1>
+                <p>Welcome to your custom-made Video Game API! Access the list of games using the link below:</p>
+                <ul>
+                    <li><a href='/api/games'>Get All Video Games (/api/games)</a></li>
+                </ul>
+            </div>
+        </body>
+        </html>
+    ");
 });
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -51,6 +51,11 @@ public class GamesController : ControllerBase
 
     private static List<VideoGame> games = CreateInitialGames();
 
+    public static void ResetGames()
+    {
+        games = CreateInitialGames();
+    }
+
     private static List<VideoGame> CreateInitialGames()
     {
         return Enumerable.Range(1, SampleTitles.Length)

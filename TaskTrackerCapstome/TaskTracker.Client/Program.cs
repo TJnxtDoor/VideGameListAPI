@@ -6,8 +6,8 @@ namespace TaskTracker.Client;
 
 class Program
 {
-    private static HttpClient client = new HttpClient();
-    private static string baseUrl = "http://localhost:5000/api/games";
+    private static readonly HttpClient client = new HttpClient();
+    private static readonly string baseUrl = Environment.GetEnvironmentVariable("GAME_API_URL") ?? "http://localhost:5000/api/games";
 
     static async Task Main(string[] args)
     {
@@ -24,7 +24,7 @@ class Program
             Console.WriteLine("6. Exit");
             Console.Write("Select an option (1-6): ");
 
-            string choice = Console.ReadLine();
+            string? choice = Console.ReadLine();
             Console.WriteLine();
 
             if (choice == "1")

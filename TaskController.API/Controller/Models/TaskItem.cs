@@ -8,4 +8,3 @@ public class TaskItem
     public bool IsCompleted { get; set; }
     public string Priority { get; set; } = "Medium";
 }
-

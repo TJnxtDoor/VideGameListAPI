@@ -6,6 +6,11 @@ namespace TaskTracker.Tests;
 
 public class GamesControllerTests
 {
+    public GamesControllerTests()
+    {
+        GamesController.ResetGames();
+    }
+
     [Fact]
     public void GetAllGames_ReturnsOkObjectResult()
     {
@@ -16,7 +21,10 @@ public class GamesControllerTests
         var result = controller.GetAllGames();
 
         // Assert
-        Assert.IsType<OkObjectResult>(result);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var games = Assert.IsAssignableFrom<List<VideoGame>>(okResult.Value);
+        Assert.NotEmpty(games);
+        Assert.True(games.Count >= 1);
     }
 
     [Fact]
@@ -91,5 +99,62 @@ public class GamesControllerTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public void UpdateGame_ValidId_ReturnsNoContent()
+    {
+        // Arrange
+        var controller = new GamesController();
+        var updatedGame = new VideoGame
+        {
+            Id = 1,
+            Title = "Updated Title",
+            Genre = "Action",
+            Platform = "PC",
+            ReleaseYear = 2024,
+            Rating = 8.0
+        };
+
+        // Act
+        var result = controller.UpdateGame(1, updatedGame);
+
+        // Assert
+        Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public void UpdateGame_InvalidId_ReturnsNotFound()
+    {
+        // Arrange
+        var controller = new GamesController();
+        var updatedGame = new VideoGame
+        {
+            Id = 999,
+            Title = "Invalid",
+            Genre = "Action",
+            Platform = "PC",
+            ReleaseYear = 2024,
+            Rating = 8.0
+        };
+
+        // Act
+        var result = controller.UpdateGame(999, updatedGame);
+
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public void DeleteGame_InvalidId_ReturnsNotFound()
+    {
+        // Arrange
+        var controller = new GamesController();
+
+        // Act
+        var result = controller.DeleteGame(999);
+
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(result);
     }
 }
